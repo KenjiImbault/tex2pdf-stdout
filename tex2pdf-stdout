@@ -1,0 +1,17 @@
+#!/bin/bash
+
+filename=$1
+
+if [[ "$filename" == *"."* ]]; then
+    if [[ "$filename" != *".tex"* ]]; then
+       exit
+    fi 
+else
+    filename="$filename.tex"
+fi
+
+pdflatex $filename > /dev/null &&
+rm $(sed 's/.tex/.log/' <<< $filename)
+rm $(sed 's/.tex/.aux/' <<< $filename) 
+cat $(sed 's/.tex/.pdf/' <<< $filename) 
+rm $(sed 's/.tex/.pdf/' <<< $filename)
